@@ -72,11 +72,9 @@ class Scanner:
                 self.string+=f"'{result[i]}' is an identifier *"
 
 
-
     def SymbolsCheck(self, code):
-        # Splitting by spaces, newlines, and separating symbols like [] and ;
-        tokens = re.findall(r'\w+|#|[^\w\s]', code)
 
+        tokens = re.findall(r'\w+|#|&&|[^\w\s]', code)  
         for i, token in enumerate(tokens):
             if token in self.Symbols:
                 print(f"The Symbol '{token}' is found at index {i}.")
@@ -84,30 +82,77 @@ class Scanner:
                 self.string += f"'{token}' is a Symbol *"
 
 
-    def ReserverdWordCheck(self,str):
-        list = str.split(" ")
-        result = []
-        current = ''
-        list = str.split(" ")
-        for q in range(len(list)):
-            current = ''
-            for char in list[q]:
-                if char in '()':
-                    if current:
-                        result.append(current)
-                        current = ''
-                    result.append(char)
-                else:
-                    current += char
-            if current:
-                result.append(current)
+    def NumbersCheck(self, code):
+        tokens = re.findall(r'\b(?:\d*\.\d+|\d+)\b|#|[^\w\s]', code)  
+
+        for i, token in enumerate(tokens):
+            if token.isdigit():
+                print(f"The Number '{token}' is found at index {i}.")
+                self.FinalString.append(token)
+                self.string += f"'{token}' is a Number *"
+            elif token.replace('.', '').isdigit():  
+                print(f"The Decimal Number '{token}' is found at index {i}.")
+                self.FinalString.append(token)
+                self.string += f"'{token}' is a Decimal Number *"
 
 
-        for i in range(len(result)):
-            if result[i] in self.ReservedWords:
-                print(f"The Reserverd Word '{result[i]}' is found at index {i}.")
-                self.FinalString.append(result[i])
-                self.string+=f"'{result[i]}' is an Reserved Word *"
+        
+    def ReserverdWordCheck(self, str):
+        tokens = re.findall(r'\w+|#|[^\w\s]', str)
+
+        for i, token in enumerate(tokens):
+            if token in self.ReservedWords:
+                print(f"The Reserved Word '{token}' is found at index {i}.")
+                self.FinalString.append(token)
+                self.string += f"'{token}' is a Reserved Word *"
+
+
+    # def ReserverdWordCheck(self, str):
+    #     result = []
+    #     current = ''
+    #     # Splitting by spaces and common symbols
+    #     tokens = re.findall(r'\w+|[,;(){}]', str)
+
+    #     for token in tokens:
+    #         if token in ',;(){}':
+    #             result.append(token)
+    #         else:
+    #             # Splitting words within tokens separated by commas or semicolons
+    #             words = token.split()
+    #             for word in words:
+    #                 result.append(word)
+
+    #     for i, word in enumerate(result):
+    #         if word in self.ReservedWords:
+    #             print(f"The Reserved Word '{word}' is found at index {i}.")
+    #             self.FinalString.append(word)
+    #             self.string += f"'{word}' is a Reserved Word *"
+
+
+    # def ReserverdWordCheck(self,str):
+    #     list = str.split(" ")
+    #     result = []
+    #     current = ''
+    #     list = str.split(" ")
+    #     for q in range(len(list)):
+    #         current = ''
+    #         for char in list[q]:
+    #             if char in '()':
+    #                 if current:
+    #                     result.append(current)
+    #                     current = ''
+    #                 result.append(char)
+    #             else:
+    #                 current += char
+    #         if current:
+    #             result.append(current)
+
+
+    #     for i in range(len(result)):
+    #         if result[i] in self.ReservedWords:
+    #             print(f"The Reserverd Word '{result[i]}' is found at index {i}.")
+    #             self.FinalString.append(result[i])
+    #             self.string+=f"'{result[i]}' is an Reserved Word *"
 
 
     def NamespaceCheck(self, code):
@@ -152,7 +197,12 @@ class Scanner:
                             break
                     print(a)
                     self.FinalString.append(a)
-                    self.string+=f"'{a}' is an Array *"
+                    xxx = a.split(',') 
+                    ctt = 0 
+                    for i in xxx:
+                        ctt +=1 
+                    self.string+=f"'{a}' is an Array of size {ctt}*"
+                    
 
 def scanString(Code):
     s = Scanner()
@@ -163,6 +213,7 @@ def scanString(Code):
     s.SymbolsCheck(Code)
     s.ReserverdWordCheck(Code)
     s.ArrayChecker(Code)
+    s.NumbersCheck(Code)
     done=''
     list=[]
 
