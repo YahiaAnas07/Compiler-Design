@@ -470,6 +470,28 @@ class Scanner:
                         ctt += 1
                     self.string += f"'{a}' is an Array of size {ctt}*"
 
+def check_brackets(code):
+    stack = []
+    lines = code.split('\n')
+    for i, line in enumerate(lines):
+        for j, char in enumerate(line):
+            if char in ['(', '{', '[']:
+                stack.append((char, i+1, j+1))
+            elif char in [')', '}', ']']:
+                if not stack:
+                    return f"Error: Extra closing bracket '{char}' at line {i+1}, column {j+1}"
+                top = stack.pop()
+                if char == ')' and top[0] != '(':
+                    return f"Error: Mismatched closing bracket '{char}' at line {i+1}, column {j+1}"
+                elif char == '}' and top[0] != '{':
+                    return f"Error: Mismatched closing bracket '{char}' at line {i+1}, column {j+1}"
+                elif char == ']' and top[0] != '[':
+                    return f"Error: Mismatched closing bracket '{char}' at line {i+1}, column {j+1}"
+    if stack:
+        top = stack.pop()
+        return f"Error: Missing closing bracket '{top[0]}' for opening bracket at line {top[1]}, column {top[2]}"
+    return "All brackets are properly opened and closed."
+
 
 def scanString(Code):
     s = Scanner()
@@ -491,7 +513,9 @@ def scanString(Code):
     print(s.FinalString)
     print("fatma")
     del s
-    return done
+    # Call the bracket checking function
+    bracket_check_result = check_brackets(Code)
+    return bracket_check_result + "\n" + done
 
 demo = gr.Interface(
     title='MSA Compiler',
