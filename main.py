@@ -8,13 +8,19 @@ class Scanner:
     Variable = ''
     FinalString = []
     string=''
+    lowercaseLetters=[]
+    uppercaseLetters=[]
+    digits=[]
+    Letters=[]
 
     def __init__(self):
-        self.Identifiers = ["int", "float", "string", "double", "bool", "char"] 
-        self.Symbols = ['+', '-', '*', '/', '%', '=', '>', '<', '&&', '||', '!', ';', ',', '(', ')', '[', ']','{','}','#']  # Actually Don'd need this any more
-        self.ReservedWords = ['for', 'while', 'if', 'do', 'return', 'break', 'continue', 'end' , 'namespace' , 'define' , 'using', 'std']
-        self.Variable = r'^[A-Za-z][A-Za-z0-9]*$'
-
+        self.Identifiers = ["int", "float", "string", "double", "bool", "char"]
+        self.Symbols = ['+', '-', '*', '/', '%', '=', '>', '<', '&', '|', '!', ';', ',', '(', ')', '[', ']', '&&','||']
+        self.ReservedWords = ['for', 'while', 'if', 'do', 'return', 'break', 'continue', 'end']
+        self.digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+        self.lowercaseLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        self.uppercaseLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+        self.Letters=self.uppercaseLetters+self.lowercaseLetters
     def __del__(self):
         print("Destructor called, object destroyed")
         self.Identifiers = []
@@ -23,35 +29,98 @@ class Scanner:
         self.Variable = ''
         self.FinalString = []
         self.string=''
-
-
     def VariableCheck(self, str):
         result = []
         current = ''
-        # Splitting by spaces, commas, and semicolons
-        tokens = re.findall(r'\w+|[,;(){}]', str)
+        list = str.split()
+        new_tokens1 = []
+        for token in list:
+            sub_tokens = token.split(';')
+            for sub_token in sub_tokens:
+                new_tokens1.append(sub_token)
+        new_tokens2 = []
+        for token in new_tokens1:
+            sub_tokens = token.split('=')
+            for sub_token in sub_tokens:
+                new_tokens2.append(sub_token)
+        new_tokens3 = []
+        for token in new_tokens2:
+            sub_tokens = token.split(',')
+            for sub_token in sub_tokens:
+                new_tokens3.append(sub_token)
+        new_tokens4 = []
+        for token in new_tokens3:
+            sub_tokens = token.split('+')
+            for sub_token in sub_tokens:
+                new_tokens4.append(sub_token)
+        new_tokens5 = []
+        for token in new_tokens4:
+            sub_tokens = token.split('-')
+            for sub_token in sub_tokens:
+                new_tokens5.append(sub_token)
+        new_tokens6 = []
+        for token in new_tokens5:
+            sub_tokens = token.split('*')
+            for sub_token in sub_tokens:
+                new_tokens6.append(sub_token)
+        new_tokens7 = []
+        for token in new_tokens6:
+            sub_tokens = token.split('/')
+            for sub_token in sub_tokens:
+                new_tokens7.append(sub_token)
+        new_tokens8 = []
+        for token in new_tokens7:
+            sub_tokens = token.split('&')
+            for sub_token in sub_tokens:
+                new_tokens8.append(sub_token)
+        new_tokens9 = []
+        for token in new_tokens8:
+            sub_tokens = token.split('[')
+            for sub_token in sub_tokens:
+                new_tokens9.append(sub_token)
+        new_tokens10 = []
+        for token in new_tokens9:
+            sub_tokens = token.split(']')
+            for sub_token in sub_tokens:
+                new_tokens10.append(sub_token)
+        new_tokens11 = []
+        for token in new_tokens10:
+            sub_tokens = token.split('(')
+            for sub_token in sub_tokens:
+                new_tokens11.append(sub_token)
+        new_tokens12 = []
+        for token in new_tokens11:
+            sub_tokens = token.split(')')
+            for sub_token in sub_tokens:
+                new_tokens12.append(sub_token)
+        new_tokens13 = []
+        for token in new_tokens12:
+            sub_tokens = token.split('{')
+            for sub_token in sub_tokens:
+                new_tokens13.append(sub_token)
+        new_tokens14 = []
+        for token in new_tokens13:
+            sub_tokens = token.split('}')
+            for sub_token in sub_tokens:
+                new_tokens14.append(sub_token)
+        new_tokens15 = []
+        for token in new_tokens14:
+            sub_tokens = token.split('%')
+            for sub_token in sub_tokens:
+                new_tokens15.append(sub_token)
+        new_tokens16 = []
+        for token in new_tokens15:
+            sub_tokens = token.split('>')
+            for sub_token in sub_tokens:
+                new_tokens16.append(sub_token)
+        new_tokens17 = []
+        for token in new_tokens16:
+            sub_tokens = token.split('<')
+            for sub_token in sub_tokens:
+                new_tokens17.append(sub_token)
 
-        for token in tokens:
-            if token in ',;(){}':
-                result.append(token)
-            else:
-                # Splitting words within tokens separated by commas or semicolons
-                words = token.split()
-                for word in words:
-                    result.append(word)
-
-        print(result)
-        for i in result:
-            if re.match(self.Variable, i) and i not in self.Identifiers and i not in self.ReservedWords:
-                print(f"{i} is a Variable")
-                self.FinalString.append(i)
-                self.string += f"{i} is a Variable *"
-
-
-    def IdentfiersCheck(self,str):
-        result = []
-        current = ''
-        list = str.split(" ")
+        list=new_tokens17
+        print(list)
         for q in range(len(list)):
             current = ''
             for char in list[q]:
@@ -65,111 +134,309 @@ class Scanner:
             if current:
                 result.append(current)
 
+
+        print(result)
+        print("xd")
+        flag=1
+        for i in result:
+            if i[0] in self.Letters and i not in self.Identifiers and i not in self.ReservedWords:
+                flag=1
+                for j in range (len(i)):
+                    if (i[j] in self.Letters) or (i[j]  in self.digits):
+                        flag=1
+                    else:
+                        flag=0
+                        break
+
+                    print(i[j])
+                    print("l")
+                if flag==1:
+                    print(f"{i} is a Variable")
+                    print(i[0])
+                    self.FinalString.append(i)
+                    self.string+=f"{i} is a Variable *"
+
+
+
+
+
+    def IdentfiersCheck(self,str):
+        result = []
+        current = ''
+        list = str.split()
+        for q in range(len(list)):
+            current = ''
+            for char in list[q]:
+                if char in '()':
+                    if current:
+                        result.append(current)
+                        current = ''
+                    result.append(char)
+                else:
+                    current += char
+            if current:
+                result.append(current)
+
+
+
         for i in range(len(result)):
             if result[i] in self.Identifiers:
                 print(f"The identifier '{result[i]}' is found at index {i}.")
                 self.FinalString.append(result[i])
                 self.string+=f"'{result[i]}' is an identifier *"
 
+    def NumberCheck(self,str):
+        result = []
+        current = ''
+        list = str.split()
+        new_tokens1 = []
+        for token in list:
+            sub_tokens = token.split(';')
+            for sub_token in sub_tokens:
+                new_tokens1.append(sub_token)
+        new_tokens2 = []
+        for token in new_tokens1:
+            sub_tokens = token.split('=')
+            for sub_token in sub_tokens:
+                new_tokens2.append(sub_token)
+        new_tokens3 = []
+        for token in new_tokens2:
+            sub_tokens = token.split(',')
+            for sub_token in sub_tokens:
+                new_tokens3.append(sub_token)
+        new_tokens4 = []
+        for token in new_tokens3:
+            sub_tokens = token.split('+')
+            for sub_token in sub_tokens:
+                new_tokens4.append(sub_token)
+        new_tokens5 = []
+        for token in new_tokens4:
+            sub_tokens = token.split('-')
+            for sub_token in sub_tokens:
+                new_tokens5.append(sub_token)
+        new_tokens6 = []
+        for token in new_tokens5:
+            sub_tokens = token.split('*')
+            for sub_token in sub_tokens:
+                new_tokens6.append(sub_token)
+        new_tokens7 = []
+        for token in new_tokens6:
+            sub_tokens = token.split('/')
+            for sub_token in sub_tokens:
+                new_tokens7.append(sub_token)
+        new_tokens8 = []
+        for token in new_tokens7:
+            sub_tokens = token.split('&')
+            for sub_token in sub_tokens:
+                new_tokens8.append(sub_token)
+        new_tokens9 = []
+        for token in new_tokens8:
+            sub_tokens = token.split('[')
+            for sub_token in sub_tokens:
+                new_tokens9.append(sub_token)
+        new_tokens10 = []
+        for token in new_tokens9:
+            sub_tokens = token.split(']')
+            for sub_token in sub_tokens:
+                new_tokens10.append(sub_token)
+        new_tokens11 = []
+        for token in new_tokens10:
+            sub_tokens = token.split('(')
+            for sub_token in sub_tokens:
+                new_tokens11.append(sub_token)
+        new_tokens12 = []
+        for token in new_tokens11:
+            sub_tokens = token.split(')')
+            for sub_token in sub_tokens:
+                new_tokens12.append(sub_token)
+        new_tokens13 = []
+        for token in new_tokens12:
+            sub_tokens = token.split('{')
+            for sub_token in sub_tokens:
+                new_tokens13.append(sub_token)
+        new_tokens14 = []
+        for token in new_tokens13:
+            sub_tokens = token.split('}')
+            for sub_token in sub_tokens:
+                new_tokens14.append(sub_token)
+        new_tokens15 = []
+        for token in new_tokens14:
+            sub_tokens = token.split('%')
+            for sub_token in sub_tokens:
+                new_tokens15.append(sub_token)
+        new_tokens16 = []
+        for token in new_tokens15:
+            sub_tokens = token.split('>')
+            for sub_token in sub_tokens:
+                new_tokens16.append(sub_token)
+        new_tokens17 = []
+        for token in new_tokens16:
+            sub_tokens = token.split('<')
+            for sub_token in sub_tokens:
+                new_tokens17.append(sub_token)
 
-    def SymbolsCheck(self, code):
+        list = new_tokens17
 
-        tokens = re.findall(r'\w+|#|&&|[^\w\s]', code)  
-        for i, token in enumerate(tokens):
-            if token in self.Symbols:
-                print(f"The Symbol '{token}' is found at index {i}.")
-                self.FinalString.append(token)
-                self.string += f"'{token}' is a Symbol *"
+        for q in range(len(list)):
+            current = ''
+            for char in list[q]:
+                if char in '()':
+                    if current:
+                        result.append(current)
+                        current = ''
+                    result.append(char)
+                else:
+                    current += char
+            if current:
+                result.append(current)
+        for i in range(len(result)):
+            if result[i].isdigit() == True:
+                print(f"The Number '{result[i]}' is found at index {i}.")
+                self.FinalString.append(result[i])
+                self.string += f"'{result[i]}' is a Number *"
 
-
-    def NumbersCheck(self, code):
-        tokens = re.findall(r'\b(?:\d*\.\d+|\d+)\b|#|[^\w\s]', code)  
-
-        for i, token in enumerate(tokens):
-            if token.isdigit():
-                print(f"The Number '{token}' is found at index {i}.")
-                self.FinalString.append(token)
-                self.string += f"'{token}' is a Number *"
-            elif token.replace('.', '').isdigit():  
-                print(f"The Decimal Number '{token}' is found at index {i}.")
-                self.FinalString.append(token)
-                self.string += f"'{token}' is a Decimal Number *"
-
-
-        
-    def ReserverdWordCheck(self, str):
-        tokens = re.findall(r'\w+|#|[^\w\s]', str)
-
-        for i, token in enumerate(tokens):
-            if token in self.ReservedWords:
-                print(f"The Reserved Word '{token}' is found at index {i}.")
-                self.FinalString.append(token)
-                self.string += f"'{token}' is a Reserved Word *"
-
-
-    # def ReserverdWordCheck(self, str):
-    #     result = []
-    #     current = ''
-    #     # Splitting by spaces and common symbols
-    #     tokens = re.findall(r'\w+|[,;(){}]', str)
-
-    #     for token in tokens:
-    #         if token in ',;(){}':
-    #             result.append(token)
-    #         else:
-    #             # Splitting words within tokens separated by commas or semicolons
-    #             words = token.split()
-    #             for word in words:
-    #                 result.append(word)
-
-    #     for i, word in enumerate(result):
-    #         if word in self.ReservedWords:
-    #             print(f"The Reserved Word '{word}' is found at index {i}.")
-    #             self.FinalString.append(word)
-    #             self.string += f"'{word}' is a Reserved Word *"
+    def SymbolsCheck(self,str):
+        result = []
+        current = ''
+        list = str.split()
+        for q in range(len(list)):
+            current=''
+            for char in list[q]:
+                if char in '()':
+                    if current:
+                        result.append(current)
+                        current = ''
+                    result.append(char)
+                else:
+                    current += char
+            if current:
+                result.append(current)
 
 
-    # def ReserverdWordCheck(self,str):
-    #     list = str.split(" ")
-    #     result = []
-    #     current = ''
-    #     list = str.split(" ")
-    #     for q in range(len(list)):
-    #         current = ''
-    #         for char in list[q]:
-    #             if char in '()':
-    #                 if current:
-    #                     result.append(current)
-    #                     current = ''
-    #                 result.append(char)
-    #             else:
-    #                 current += char
-    #         if current:
-    #             result.append(current)
+
+        for i in result:
+            if i in self.Symbols:
+                print(f"The Symbol '{i}' is found at index {i}.")
+                self.FinalString.append(i)
+                self.string+=f"'{i}' is a Symbol *"
+            else:
+                for j in range (len(i)):
+                    if i[j] in self.Symbols :
+                        print(f"The Symbol '{i[j]}' is found at index {j}.")
+                        self.FinalString.append(i[j])
+                        self.string += f"'{i[j]}' is a Symbol *"
 
 
-    #     for i in range(len(result)):
-    #         if result[i] in self.ReservedWords:
-    #             print(f"The Reserverd Word '{result[i]}' is found at index {i}.")
-    #             self.FinalString.append(result[i])
-    #             self.string+=f"'{result[i]}' is an Reserved Word *"
+
+    def ReserverdWordCheck(self,str):
+        list = str.split()
+        result = []
+        current = ''
+        list = str.split()
+        for q in range(len(list)):
+            current = ''
+            for char in list[q]:
+                if char in '()':
+                    if current:
+                        result.append(current)
+                        current = ''
+                    result.append(char)
+                else:
+                    current += char
+            if current:
+                result.append(current)
 
 
-    def NamespaceCheck(self, code):
-        # Pattern to identify namespaces
-        pattern = r'\bnamespace\s+\w+\s*{'
-
-        if re.search(pattern, code):
-            print("Namespace found.")
-            self.FinalString.append("Namespace")
-            self.string += "Namespace is found *"
+        for i in range(len(result)):
+            if result[i] in self.ReservedWords:
+                print(f"The Reserverd Word '{result[i]}' is found at index {i}.")
+                self.FinalString.append(result[i])
+                self.string+=f"'{result[i]}' is an Reserved Word *"
 
 
     def ArrayChecker(self,str):
-        list = str.split(" ")
+        list = str.split()
         result = []
         current = ''
-        list = str.split(" ")
+        list = str.split()
+        new_tokens1 = []
+        for token in list:
+            sub_tokens = token.split(';')
+            for sub_token in sub_tokens:
+                new_tokens1.append(sub_token)
+        new_tokens2 = []
+        for token in new_tokens1:
+            sub_tokens = token.split('=')
+            for sub_token in sub_tokens:
+                new_tokens2.append(sub_token)
+        new_tokens3 = []
+        for token in new_tokens2:
+            sub_tokens = token.split(',')
+            for sub_token in sub_tokens:
+                new_tokens3.append(sub_token)
+        new_tokens4 = []
+        for token in new_tokens3:
+            sub_tokens = token.split('+')
+            for sub_token in sub_tokens:
+                new_tokens4.append(sub_token)
+        new_tokens5 = []
+        for token in new_tokens4:
+            sub_tokens = token.split('-')
+            for sub_token in sub_tokens:
+                new_tokens5.append(sub_token)
+        new_tokens6 = []
+        for token in new_tokens5:
+            sub_tokens = token.split('*')
+            for sub_token in sub_tokens:
+                new_tokens6.append(sub_token)
+        new_tokens7 = []
+        for token in new_tokens6:
+            sub_tokens = token.split('/')
+            for sub_token in sub_tokens:
+                new_tokens7.append(sub_token)
+        new_tokens8 = []
+        for token in new_tokens7:
+            sub_tokens = token.split('&')
+            for sub_token in sub_tokens:
+                new_tokens8.append(sub_token)
+
+        new_tokens11 = []
+        for token in new_tokens8:
+            sub_tokens = token.split('(')
+            for sub_token in sub_tokens:
+                new_tokens11.append(sub_token)
+        new_tokens12 = []
+        for token in new_tokens11:
+            sub_tokens = token.split(')')
+            for sub_token in sub_tokens:
+                new_tokens12.append(sub_token)
+        new_tokens13 = []
+        for token in new_tokens12:
+            sub_tokens = token.split('{')
+            for sub_token in sub_tokens:
+                new_tokens13.append(sub_token)
+        new_tokens14 = []
+        for token in new_tokens13:
+            sub_tokens = token.split('}')
+            for sub_token in sub_tokens:
+                new_tokens14.append(sub_token)
+        new_tokens15 = []
+        for token in new_tokens14:
+            sub_tokens = token.split('%')
+            for sub_token in sub_tokens:
+                new_tokens15.append(sub_token)
+        new_tokens16 = []
+        for token in new_tokens15:
+            sub_tokens = token.split('>')
+            for sub_token in sub_tokens:
+                new_tokens16.append(sub_token)
+        new_tokens17 = []
+        for token in new_tokens16:
+            sub_tokens = token.split('<')
+            for sub_token in sub_tokens:
+                new_tokens17.append(sub_token)
+
+        list = new_tokens17
         for q in range(len(list)):
             current = ''
             for char in list[q]:
@@ -197,12 +464,12 @@ class Scanner:
                             break
                     print(a)
                     self.FinalString.append(a)
-                    xxx = a.split(',') 
-                    ctt = 0 
-                    for i in xxx:
-                        ctt +=1 
-                    self.string+=f"'{a}' is an Array of size {ctt}*"
-                    
+                    xx = a.split(',')
+                    ctt = 0
+                    for q in xx:
+                        ctt += 1
+                    self.string += f"'{a}' is an Array of size {ctt}*"
+
 
 def scanString(Code):
     s = Scanner()
@@ -213,7 +480,7 @@ def scanString(Code):
     s.SymbolsCheck(Code)
     s.ReserverdWordCheck(Code)
     s.ArrayChecker(Code)
-    s.NumbersCheck(Code)
+    s.NumberCheck(Code)
     done=''
     list=[]
 
@@ -222,11 +489,12 @@ def scanString(Code):
         done += element + "\n"
     ss=s.string
     print(s.FinalString)
+    print("fatma")
     del s
     return done
 
 demo = gr.Interface(
-    title='C++ Compiler',
+    title='MSA Compiler',
     fn=scanString,
     inputs=["code"],
     outputs=["text"],
@@ -235,5 +503,13 @@ demo = gr.Interface(
     submit_btn='Scan...',
 )
 
+
+
+
+# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     demo.launch()
+
+
+
+
