@@ -12,6 +12,7 @@ class Scanner:
     uppercaseLetters=[]
     digits=[]
     Letters=[]
+    valid=[]
 
     def __init__(self):
         self.Identifiers = ["int", "float", "string", "double", "bool", "char"]
@@ -29,17 +30,15 @@ class Scanner:
         self.Variable = ''
         self.FinalString = []
         self.string=''
+        self.valid = []
     def VariableCheck(self, str):
         result = []
         current = ''
         list = str.split()
         new_tokens1 = []
-        for token in list:
-            sub_tokens = token.split(';')
-            for sub_token in sub_tokens:
-                new_tokens1.append(sub_token)
+
         new_tokens2 = []
-        for token in new_tokens1:
+        for token in list:
             sub_tokens = token.split('=')
             for sub_token in sub_tokens:
                 new_tokens2.append(sub_token)
@@ -119,8 +118,13 @@ class Scanner:
             for sub_token in sub_tokens:
                 new_tokens17.append(sub_token)
 
-        list=new_tokens17
-        print(list)
+        for token in new_tokens17:
+            sub_tokens = token.split(';')
+            for sub_token in sub_tokens:
+                new_tokens1.append(sub_token)
+
+        list=new_tokens1
+
         for q in range(len(list)):
             current = ''
             for char in list[q]:
@@ -135,11 +139,18 @@ class Scanner:
                 result.append(current)
 
 
-        print(result)
-        print("xd")
+
+
         flag=1
+        ct=0
         for i in result:
+            #check if it is declared more than one time
             if i[0] in self.Letters and i not in self.Identifiers and i not in self.ReservedWords:
+                if i in self.valid:
+                    if result[ct - 1] in self.Identifiers:
+                        print('error repeated', i)
+
+            if i[0] in self.Letters and i not in self.valid and i not in self.Identifiers and i not in self.ReservedWords:
                 flag=1
                 for j in range (len(i)):
                     if (i[j] in self.Letters) or (i[j]  in self.digits):
@@ -148,18 +159,69 @@ class Scanner:
                         flag=0
                         break
 
-                    print(i[j])
-                    print("l")
+
                 if flag==1:
-                    print(f"{i} is a Variable")
-                    print(i[0])
+                    if  (result[ct-1]in self.Identifiers):
+                        self.valid.append(i)
+                    else:
+                        print("error",i)
+
+
                     self.FinalString.append(i)
                     self.string+=f"{i} is a Variable *"
 
+            ct=ct+1
+        self.verror(result)
 
 
 
 
+    def checker(self,str):
+        list = str.split('\n')
+        st=""
+        print (type(st))
+        for i in list:
+            st = ''
+            oldst=''
+            for j in range(len(i)):
+                if i[j].isdigit() ==False  :
+
+                    if i[j] ==' ' or i[j]  in self.Symbols :
+                        oldst =st
+                        print(oldst, st)
+                        st=''
+                    else:
+                        st = st + i[j]
+                    if st in self.valid and oldst in self.Identifiers :
+                        o=j
+                        print("a7a" ,st,oldst)
+                        for k in range(j+1,len(i)):
+                            if (i[k] ==' ' or i[k] in self.Symbols or i[k].isdigit() ==True or i[k] in self.Letters) and i[k]!=';' :
+                                j=k
+                                if i[k]==' ':
+                                    break
+                            else:
+                                break
+
+                        if  j+1<len(i):
+                            print('checker right',i[o], i[j])
+                            if  i[j+1]!=';':
+                                print('error check' , st)
+                        else:
+                            if o+1<len(i):
+                                print('error check', st)
+
+
+    def verror(self,result):
+        for i in range(len(result)):
+            if result[i] not in self.valid and result[i] not in self.Identifiers and result[i] not in self.ReservedWords and  result[i].isdigit() ==False  :
+                print('Error',result[i])
+
+    def simicolon(self,str):
+        list=str.split('\n')
+        for i in list:
+            if i[len(i)-1] != ';':
+                print('simicolon missed')
     def IdentfiersCheck(self,str):
         result = []
         current = ''
@@ -470,6 +532,7 @@ class Scanner:
                         ctt += 1
                     self.string += f"'{a}' is an Array of size {ctt}*"
 
+
 def check_brackets(code):
     stack = []
     lines = code.split('\n')
@@ -503,6 +566,9 @@ def scanString(Code):
     s.ReserverdWordCheck(Code)
     s.ArrayChecker(Code)
     s.NumberCheck(Code)
+    #s.verror(Code)
+    s.simicolon(Code)
+    s.checker(Code)
     done=''
     list=[]
 
@@ -510,12 +576,13 @@ def scanString(Code):
     for element in list:
         done += element + "\n"
     ss=s.string
-    print(s.FinalString)
-    print("fatma")
+    print(s.valid)
+    s.FinalString.clear()
+    s.valid.clear()
     del s
-    # Call the bracket checking function
     bracket_check_result = check_brackets(Code)
     return bracket_check_result + "\n" + done
+
 
 demo = gr.Interface(
     title='MSA Compiler',
