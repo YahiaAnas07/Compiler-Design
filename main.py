@@ -396,6 +396,7 @@ class Scanner:
         result = []
         current = ''
         list = str.split() 
+        
         for q in range(len(list)):
             current = ''
             for char in list[q]:
@@ -409,15 +410,27 @@ class Scanner:
             if current:
                 result.append(current)
 
-        # result {}
+        print(result)
+        print("this is the list ")
+        print( list)
         for i in range(len(result)):
             if result[i] in self.ReservedWords:
                 ct  = 0
                 if result[i] == "while" or result[i] == "if":
-                    swa2 = i+1
+                    swa2 = i+2
+                    flag = 0  
                     while swa2 < len(result) and result[swa2]!= ')':
+                        temp1 , temp2 = "" , ""
+                        for j in range (len(i)):
+                            if result[swa2][j] not in self.Symbols :
+                                if flag == 2: break
+                                flag = 1
+                                temp1 +=  result[swa2][j]  
+                            else:
+                                flag = 2 
+                                temp2 +=  result[swa2][j]   
                         if ct % 2 == 0:
-                            if result[i].isdigit() == True or result[i] in self.valid: # smart isdigit()
+                            if temp1.isdigit() == True or temp1 in self.valid: # smart isdigit()
                                 ct+=1
                                 continue
                             else:
@@ -425,7 +438,7 @@ class Scanner:
                                 print("eh da y3m fen l condition l slem")
                                 break
                         else:
-                            if  result[i] not in self.Symbols:
+                            if  temp2 not in self.Symbols:
                                 # display error
                                 print("eh da y3m fen l condition l slem")
                                 break
