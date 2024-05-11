@@ -17,6 +17,7 @@ class Scanner:
     def __init__(self):
         self.Identifiers = ["int", "float", "string", "double", "bool", "char"]
         self.Symbols = ['+', '-', '*', '/', '%', '=', '>', '<', '&', '|', '!', ';', ',', '(', ')', '[', ']', '&&','||']
+        self.operators = ['+', '-', '*', '/', '%', '=', '>', '<', '&&','||']
         self.ReservedWords = ['for', 'while', 'if', 'do', 'return', 'break', 'continue', 'end']
         self.digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         self.lowercaseLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
@@ -394,7 +395,7 @@ class Scanner:
         list = str.split()
         result = []
         current = ''
-        list = str.split()
+        list = str.split() 
         for q in range(len(list)):
             current = ''
             for char in list[q]:
@@ -408,9 +409,28 @@ class Scanner:
             if current:
                 result.append(current)
 
-
+        # result {}
         for i in range(len(result)):
             if result[i] in self.ReservedWords:
+                ct  = 0
+                if result[i] == "while" or result[i] == "if":
+                    swa2 = i+1
+                    while swa2 < len(result) and result[swa2]!= ')':
+                        if ct % 2 == 0:
+                            if result[i].isdigit() == True or result[i] in self.valid: # smart isdigit()
+                                ct+=1
+                                continue
+                            else:
+                                # we must display an error here
+                                print("eh da y3m fen l condition l slem")
+                                break
+                        else:
+                            if  result[i] not in self.Symbols:
+                                # display error
+                                print("eh da y3m fen l condition l slem")
+                                break
+                            else:
+                                ct+=1
                 print(f"The Reserverd Word '{result[i]}' is found at index {i}.")
                 self.FinalString.append(result[i])
                 self.string+=f"'{result[i]}' is an Reserved Word *"
@@ -533,6 +553,7 @@ class Scanner:
                     self.string += f"'{a}' is an Array of size {ctt}*"
 
 
+    
 def check_brackets(code):
     stack = []
     lines = code.split('\n')
@@ -549,7 +570,7 @@ def check_brackets(code):
                 elif char == '}' and top[0] != '{':
                     return f"Error: Mismatched closing bracket '{char}' at line {i+1}, column {j+1}"
                 elif char == ']' and top[0] != '[':
-                    return f"Error: Mismatched closing bracket '{char}' at line {i+1}, column {j+1}"
+                    return f"Error: Mismatched closing brafcket '{char}' at line {i+1}, column {j+1}"
     if stack:
         top = stack.pop()
         return f"Error: Missing closing bracket '{top[0]}' for opening bracket at line {top[1]}, column {top[2]}"
@@ -558,8 +579,6 @@ def check_brackets(code):
 
 def scanString(Code):
     s = Scanner()
-    test_strings = ["q", "1world", "Python3", "123abc", "AbcDEF", "lowercase", "UPPERCASE"]
-    test_string1 = "int x1[] for (x while) (+ -) x2[]"
     s.VariableCheck(Code)
     s.IdentfiersCheck(Code)
     s.SymbolsCheck(Code)
