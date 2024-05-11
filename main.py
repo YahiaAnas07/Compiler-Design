@@ -194,7 +194,7 @@ class Scanner:
                         st = st + i[j]
                     if st in self.valid and oldst in self.Identifiers :
                         o=j
-                        print("a7a" ,st,oldst)
+                        print("3lhady" ,st,oldst)
                         for k in range(j+1,len(i)):
                             if (i[k] ==' ' or i[k] in self.Symbols or i[k].isdigit() ==True or i[k] in self.Letters) and i[k]!=';' :
                                 j=k
