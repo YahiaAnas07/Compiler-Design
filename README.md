@@ -110,8 +110,11 @@ demo.launch()
 if __name__ == '__main__':
     demo.launch()
 ```
+## License
+This project is licensed under the [MIT License](LICENSE).
 
-[View Project Description](Compiler%20Design%20Project%20Description.pdf) 
-
-[Cases for Phase 2](Cases%20for%20Phase%202%20for%20all%20teams.pdf)
-
+## Author
+- Yahia Mohamed Anas
+- Seifeldin Amr
+- Ahmed Abdelmoneim
+- Aly Essam
