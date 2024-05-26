@@ -1185,6 +1185,26 @@ class Scanner:
 
 
 
+    def check_brackets(self,code):
+        stack = []
+        lines = code.split('\n')
+        for i, line in enumerate(lines):
+            for j, char in enumerate(line):
+                if char in ['(', '{', '[']:
+                    stack.append((char, i + 1, j + 1))
+                elif char in [')', '}', ']']:
+                    if not stack:
+                        self.errolist.append(f"Error: Extra closing bracket '{char}' at line {i + 1}, column {j + 1}")
+                    top = stack.pop()
+                    if char == ')' and top[0] != '(':
+                        self.errolist.append( f"Error: Mismatched closing bracket '{char}' at line {i + 1}, column {j + 1}")
+                    elif char == '}' and top[0] != '{':
+                        self.errolist.append( f"Error: Mismatched closing bracket '{char}' at line {i + 1}, column {j + 1}")
+                    elif char == ']' and top[0] != '[':
+                        self.errolist.append( f"Error: Mismatched closing brafcket '{char}' at line {i + 1}, column {j + 1}")
+        if stack:
+            top = stack.pop()
+            self.errolist.append( f"Error: Missing closing bracket '{top[0]}' for opening bracket at line {top[1]}, column {top[2]}")
 
     def SwitchCheck(self, code):
         print("This is for the switch")
@@ -1225,27 +1245,7 @@ class Scanner:
                     self.errolist.append(f"Error: 'break' statement missing in switch statement. Line {line_num}")
 
 
-def check_brackets(code):
-    stack = []
-    lines = code.split('\n')
-    for i, line in enumerate(lines):
-        for j, char in enumerate(line):
-            if char in ['(', '{', '[']:
-                stack.append((char, i + 1, j + 1))
-            elif char in [')', '}', ']']:
-                if not stack:
-                    return f"Error: Extra closing bracket '{char}' at line {i + 1}, column {j + 1}"
-                top = stack.pop()
-                if char == ')' and top[0] != '(':
-                    return f"Error: Mismatched closing bracket '{char}' at line {i + 1}, column {j + 1}"
-                elif char == '}' and top[0] != '{':
-                    return f"Error: Mismatched closing bracket '{char}' at line {i + 1}, column {j + 1}"
-                elif char == ']' and top[0] != '[':
-                    return f"Error: Mismatched closing brafcket '{char}' at line {i + 1}, column {j + 1}"
-    if stack:
-        top = stack.pop()
-        return f"Error: Missing closing bracket '{top[0]}' for opening bracket at line {top[1]}, column {top[2]}"
-    return "All brackets are properly opened and closed."
+
 
 
 def count_occurrences(code, word):
@@ -1272,6 +1272,7 @@ def has_variable_switch(line):
 
 def scanString(Code):
     s = Scanner()
+    s.check_brackets(Code)
     s.VariableCheck(Code)
     s.IdentfiersCheck(Code)
     s.SymbolsCheck(Code)
@@ -1373,8 +1374,8 @@ def scanString(Code):
     s.memoryArray.clear()
 
     del s
-    bracket_check_result = check_brackets(Code)
-    return (bracket_check_result + "\n" + done), errStmt,table
+
+    return (""), errStmt,table
 
 
 with gr.Blocks() as demo:
